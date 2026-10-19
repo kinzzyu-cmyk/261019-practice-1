@@ -13,7 +13,16 @@ python3 -m http.server 8000 --bind 0.0.0.0
 
 브라우저에서 **http://localhost:8000**에 접속합니다. 원격 개발 환경에서는 포트 8000을 전달하세요. 서버 종료는 `Ctrl+C`입니다. `index.html`을 직접 열 수도 있지만, `file://`의 브라우저별 저장소 제한을 피하려면 HTTP 서버를 사용하세요.
 
-기존 저장소의 Streamlit 예제 파일은 보존되어 있으며 이 학습지 실행에는 사용하지 않습니다.
+### Streamlit으로 실행
+
+```bash
+python3 -m pip install -r requirements.txt
+python3 -m streamlit run streamlit_app.py
+```
+
+브라우저에서 **http://localhost:8501**에 접속합니다. 원격 개발 환경에서는 포트 8501을 전달하세요. `streamlit_app.py`는 같은 폴더의 HTML·CSS·JavaScript를 읽어 CSS·JS를 포함한 학습지를 표시합니다. 두 실행 방식은 동일한 학습지 코드를 사용합니다. `st.iframe`을 사용하는 Streamlit 1.66 이상이 필요합니다.
+
+텍스트와 이미지는 Streamlit 서버가 아닌 학생의 브라우저에 저장됩니다. 정적 서버(8000)와 Streamlit(8501)은 접속 주소가 달라 저장 공간이 구분됩니다. 기존 작성 내용은 JSON 내보내기·불러오기로 옮기세요. 학습지 안의 **인쇄 / PDF** 버튼을 사용하면 iframe 안에서 전체 학습지를 인쇄합니다.
 
 ## 학생 사용 방법
 
@@ -62,3 +71,7 @@ python3 -m http.server 8000 --bind 0.0.0.0
 - 저장 공간 부족 오류를 주입했을 때 실패 알림과 메모리 답변의 JSON 백업, 브라우저 JavaScript 오류 없음
 
 **확인하지 못한 항목:** 실제 프린터 출력, 운영체제의 인쇄 대화상자 조작, Safari·Firefox, 실제 태블릿·휴대전화의 터치 및 보조기기 사용. 인쇄 버튼의 `window.print` 호출은 테스트에서 출력 DOM을 캡처하는 함수로 대체했고 PDF는 headless 출력으로 확인했습니다.
+
+### Streamlit 추가 검증
+
+Streamlit 1.66.0의 실제 iframe을 Chromium으로 열어 학습지 표시, 단계 이동, 입력 후 새로고침 복원, 아이디어 추가·삭제, 점수 합산과 직접 선택을 확인했습니다. IndexedDB 이미지 복원, 이미지가 포함된 JSON 다운로드·불러오기, 작성본·빈 학습지의 인쇄용 DOM 구분도 확인했습니다. 390px 모바일 화면에서 바깥 화면과 iframe 모두 가로 넘침이 없었고 JavaScript 오류가 없었습니다. Streamlit에서도 실제 프린터·인쇄 대화상자 조작은 확인하지 않았습니다.
